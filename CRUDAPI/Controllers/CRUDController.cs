@@ -13,6 +13,7 @@ namespace CRUDAPI.Controllers
     [ApiController]
     public class CRUDController : ControllerBase
     {
+        private bool check = false;
         IUserRepository userRepository;
         public CRUDController(IUserRepository userRepository)
         {
@@ -23,13 +24,21 @@ namespace CRUDAPI.Controllers
         public IActionResult GetUsers()
         {
             List<User> allUsers= userRepository.GetAllUsers();
-            return Ok(allUsers);
+            if(allUsers!=null)
+            {
+                return Ok(allUsers);
+            }
+            return NotFound();
         }
         [HttpGet("GetUserById")]
         public IActionResult GetUserById(int userId)
         {
             User user = userRepository.GetUserById(userId);
-            return Ok(user);
+            if(user!=null)
+            {
+                return Ok(user);
+            }
+            return NotFound();
         }
         [HttpPost("AddUser")]
         public IActionResult AddUser(User user)
@@ -41,15 +50,24 @@ namespace CRUDAPI.Controllers
         [HttpDelete("DeleteUser")]
         public IActionResult DeleteUser(int userId)
         {
-            userRepository.RemoveUser(userId);
-            return Ok();
+           check= userRepository.RemoveUser(userId);
+
+            if(check)
+            {
+                return Ok();
+            }
+            return NotFound();
         }
 
         [HttpPut("UpdateUser")]
         public IActionResult SetUser(User user)
         {
-            userRepository.UpdateUser(user);
-            return Ok(user);
+          check=  userRepository.UpdateUser(user);
+            if(check)
+            {
+                return Ok(user);
+            }
+            return NotFound();
         }
 
 

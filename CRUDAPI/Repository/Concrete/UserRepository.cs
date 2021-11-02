@@ -11,6 +11,7 @@ namespace CRUDAPI.Repository.Concrete
 {
     public class UserRepository : IUserRepository
     {
+        private bool check = false;
         string jsonFile = @"C:\Users\metin\source\repos\CRUDAPI\CRUDAPI\Repository\Users.json";
         
         //Reads JsonFile before processes
@@ -62,17 +63,19 @@ namespace CRUDAPI.Repository.Concrete
             return userList.Find(a => a.UserId == id);
         }
 
-        public void RemoveUser(int id)
+        public bool RemoveUser(int id)
         {
             List<User> userList = GetUsersFromJson();
             //Finds user according to userId
             User user = userList.Find(a => a.UserId == id);
             
-            userList.Remove(user);
+              check= userList.Remove(user);
             SerializeJson(userList);
+
+            return check;
         }
 
-        public void UpdateUser(User user)
+        public bool UpdateUser(User user)
         {
             List<User> userList = GetUsersFromJson();
             //Finds olduser according to userId to change it
@@ -80,8 +83,14 @@ namespace CRUDAPI.Repository.Concrete
             //finds the index of olduser in list
             int index = userList.IndexOf(oldUser);
             //changes the oldUser with newUser
-            userList[index]=user;
-            SerializeJson(userList);
+            check = oldUser != null;
+           if (check)
+            {
+                userList[index] = user;
+                SerializeJson(userList);
+            }
+
+            return check;
         }
     }
 }
