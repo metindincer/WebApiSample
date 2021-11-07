@@ -11,7 +11,7 @@ namespace CRUDAPI.Repository.Abstract
         List<User> GetAllUsers();
         void AddUser(User user);
         bool RemoveUser(int id);
-        bool UpdateUser(User user);
+        bool UpdateUser(int id,User user);
         User GetUserById(int id);
     }
 }
