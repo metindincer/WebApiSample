@@ -75,11 +75,11 @@ namespace CRUDAPI.Repository.Concrete
             return check;
         }
 
-        public bool UpdateUser(User user)
+        public bool UpdateUser(int id,User user)
         {
             List<User> userList = GetUsersFromJson();
             //Finds olduser according to userId to change it
-            User oldUser = userList.Find(a => a.UserId == user.UserId);
+            User oldUser = userList.Find(a => a.UserId == id);
             //finds the index of olduser in list
             int index = userList.IndexOf(oldUser);
             //changes the oldUser with newUser
